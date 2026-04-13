@@ -4,54 +4,17 @@
     displayBlock="true"
     xmlns="sap.m"
     xmlns:form="sap.ui.layout.form"
+    xmlns:core="sap.ui.core"
 >
     <Page
         id="SalesPageDetail"
         title="{i18n>title}"
     >
         <content>
-            <IconTabBar>
+            <IconTabBar headerMode="Inline">
                 <items>
-                    <IconTabFilter text="Sales Item">
-                        <Table
-                            id="idSalesOrdersItems"
-                            items="{salesDetailsModel>/ToLineItems/results}"
-                        >
-                            <columns>
-                                <Column>
-                                    <header>
-                                        <Text text="Product ID" />
-                                    </header>
-                                </Column>
-
-                                <Column>
-                                    <Text text="Net Amount" />
-                                </Column>
-
-                                <Column>
-                                    <Text text="Quantity" />
-                                </Column>
-
-                                <Column>
-                                    <Text text="Quantity Unit" />
-                                </Column>
-                            </columns>
-
-                            <ColumnListItem>
-                                <cells>
-                                    <ObjectIdentifier
-                                        title="{salesDetailsModel>ProductID}"
-                                    />
-                                    <Text
-                                        text="{salesDetailsModel>NetAmount}"
-                                    />
-                                    <Text text="{salesDetailsModel>Quantity}" />
-                                    <Text
-                                        text="{salesDetailsModel>QuantityUnit}"
-                                    />
-                                </cells>
-                            </ColumnListItem>
-                        </Table>
+                    <IconTabFilter text="Sales Item" count="{salesDetailsModel>/itemCountVivek}" >
+                        <core:Fragment type="XML" fragmentName="com.sld.managesalesorder.view.fragment.SalesItems"/>
                     </IconTabFilter>
 
                     <IconTabFilter text="Business Partner">

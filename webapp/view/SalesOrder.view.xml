@@ -8,20 +8,21 @@
             <Table id="idSalesOrders" items="{salesModel>/results}">
                 <headerToolbar>
                     <Toolbar >
+                        <Label text="{salesModel>/salesCount}" />
                         <ToolbarSpacer />
-                        <Button text="Create Sales Order" type="Accept"> </Button>
+                        <Button text="Create Sales Order" type="Accept" press="onPresCreateSalesOrder"> </Button>
                     </Toolbar>
                 </headerToolbar>
                
                 <columns>
                     <Column>
                         <header>
-                            <Text text="Sales order ID" />
+                            <Text text="{i18n>table.sales.salesorderid}" />
                         </header>
                     </Column>
 
                     <Column>
-                        <Text text="Customer Name" />
+                        <Text text="{i18n>table.sales.customername}" />
                     </Column>
 
                     <Column>

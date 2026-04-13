@@ -34,6 +34,7 @@ sap.ui.define([
                         $expand: "ToLineItems,ToBusinessPartner"
                     },
                     success: function(oData, oResponse) {
+                        oData.itemCountVivek =  oData.ToLineItems.results.length ;
                        oJsonModel.setData(oData);
 
                        oSimpleForm.bindElement("salesDetailsModel>/ToBusinessPartner");
