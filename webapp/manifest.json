@@ -1,0 +1,129 @@
+{
+  "_version": "1.37.0",
+  "sap.app": {
+    "id": "com.sld.managesalesorder",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.21.0",
+      "toolsId": "1aff3514-3421-4738-a753-6ba532ac6f8c"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/sap/opu/odata/iwbep/GWSAMPLE_BASIC/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.96.32",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "com.sld.managesalesorder.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {}
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "viewType": "XML",
+        "async": true,
+        "viewPath": "com.sld.managesalesorder.view",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "clearControlAggregation": false
+      },
+      "routes": [
+        {
+          "name": "RouteSalesOrder",
+          "pattern": "",
+          "target": [
+            "TargetSalesOrder"
+          ]
+        },
+        {
+          "name": "RouteSalesOrderDeatil",
+          "pattern": "SalesOrderDet/{salesOrderID}",
+          "target": [
+            "TargetSalesOrderDeatil"
+          ]
+        }
+      ],
+      "targets": {
+        "TargetSalesOrder": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "SalesOrder",
+          "viewName": "SalesOrder"
+        },
+        "TargetSalesOrderDeatil": {
+          "viewType": "XML",
+          "transition": "slide",
+          "clearControlAggregation": false,
+          "viewId": "SalesOrderDetail",
+          "viewName": "SalesOrderDetail"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "com.sld.managesalesorder.view.App",
+      "type": "XML",
+      "async": true,
+      "id": "App"
+    }
+  }
+}

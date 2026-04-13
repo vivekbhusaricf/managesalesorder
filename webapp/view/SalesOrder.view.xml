@@ -1,0 +1,56 @@
+
+<mvc:View controllerName="com.sld.managesalesorder.controller.SalesOrder"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}">
+        <content>
+
+            <Table id="idSalesOrders" items="{salesModel>/results}">
+                <headerToolbar>
+                    <Toolbar >
+                        <ToolbarSpacer />
+                        <Button text="Create Sales Order" type="Accept"> </Button>
+                    </Toolbar>
+                </headerToolbar>
+               
+                <columns>
+                    <Column>
+                        <header>
+                            <Text text="Sales order ID" />
+                        </header>
+                    </Column>
+
+                    <Column>
+                        <Text text="Customer Name" />
+                    </Column>
+
+                    <Column>
+                        <Text text="Status" />
+                    </Column>
+
+                    <Column>
+                        <Text text="Gross Amount" />
+                    </Column>
+
+                    <Column>
+                        <Text text="" />
+                    </Column>
+                </columns>
+
+                    <ColumnListItem type="Navigation" press="onPressItem">
+                        <cells>
+                            <ObjectIdentifier title="{salesModel>SalesOrderID}" />
+                            <Text text="{salesModel>CustomerName}" />
+                            <ObjectStatus text="{salesModel>LifecycleStatusDescription}" icon="sap-icon://status-completed" state="Success"/>
+                            <ObjectNumber
+                                number="{salesModel>GrossAmount}"
+                                unit="{salesModel>CurrencyCode}"
+                            />
+                            <Button text ="gekki" press="onPressButton"/>
+                        </cells>
+                    </ColumnListItem>
+            </Table>
+        </content>
+
+    </Page>
+</mvc:View>

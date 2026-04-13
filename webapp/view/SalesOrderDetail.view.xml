@@ -1,0 +1,124 @@
+<mvc:View
+    controllerName="com.sld.managesalesorder.controller.SalesOrderDetail"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="true"
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+>
+    <Page
+        id="SalesPageDetail"
+        title="{i18n>title}"
+    >
+        <content>
+            <IconTabBar>
+                <items>
+                    <IconTabFilter text="Sales Item">
+                        <Table
+                            id="idSalesOrdersItems"
+                            items="{salesDetailsModel>/ToLineItems/results}"
+                        >
+                            <columns>
+                                <Column>
+                                    <header>
+                                        <Text text="Product ID" />
+                                    </header>
+                                </Column>
+
+                                <Column>
+                                    <Text text="Net Amount" />
+                                </Column>
+
+                                <Column>
+                                    <Text text="Quantity" />
+                                </Column>
+
+                                <Column>
+                                    <Text text="Quantity Unit" />
+                                </Column>
+                            </columns>
+
+                            <ColumnListItem>
+                                <cells>
+                                    <ObjectIdentifier
+                                        title="{salesDetailsModel>ProductID}"
+                                    />
+                                    <Text
+                                        text="{salesDetailsModel>NetAmount}"
+                                    />
+                                    <Text text="{salesDetailsModel>Quantity}" />
+                                    <Text
+                                        text="{salesDetailsModel>QuantityUnit}"
+                                    />
+                                </cells>
+                            </ColumnListItem>
+                        </Table>
+                    </IconTabFilter>
+
+                    <IconTabFilter text="Business Partner">
+                        <!-- <Text text="{salesDetailsModel>ToBusinessPartner/}></Text> -->
+                        <!-- <HBox alignContent="Stretch" alignItems="Stretch">
+                 <VBox>
+                 <Label text="Business partner ID: " />
+                 <Text text="{salesDetailsModel>/ToBusinessPartner/BusinessPartnerID}" />
+                 </VBox>
+                 <VBox>
+                 <Label text="Address - Country: " />
+                 <Text text="{salesDetailsModel>/ToBusinessPartner/Address/Country}" />
+                 </VBox>
+                 </HBox> -->
+
+                        <form:SimpleForm
+                            id="idSimpleFormBusinessPartner"
+                            editable="false"
+                            layout="ColumnLayout"
+                            labelSpanXL="3"
+                            labelSpanL="2"
+                            labelSpanM="3"
+                            labelSpanS="12"
+                            adjustLabelSpan="false"
+                            emptySpanXL="4"
+                            emptySpanL="4"
+                            emptySpanM="4"
+                            emptySpanS="0"
+                            columnsXL="4"
+                            columnsL="3"
+                            columnsM="1"
+                            singleContainerFullSize="false">
+
+                             <!-- objectBindings="{salesDetailsModel>/ToBusinessPartner}"> -->
+                            <form:content>
+                                <Label text="Business Partner ID" />
+                                <!-- <Text text="{salesDetailsModel>/ToBusinessPartner/BusinessPartnerID}" /> -->
+                                <Text text="{salesDetailsModel>BusinessPartnerID}" /> 
+
+                                <Label text="CompanyName" />
+                                <Text text="{salesDetailsModel>CompanyName}" />
+
+                                 <Label text="Full Address" />
+                                <Text text="{salesDetailsModel>Address/Street}, {salesDetailsModel>Address/PostalCode}, {salesDetailsModel>Address/City}, {salesDetailsModel>Address/Country}" />
+
+                                <Label text="Email Address" />
+                                <Text text="{salesDetailsModel>EmailAddress}" />
+
+                                <Label text="Fax Number" />
+                                <Text text="{salesDetailsModel>FaxNumber}" />
+
+
+                            </form:content>
+                        </form:SimpleForm>
+                    </IconTabFilter>
+                </items>
+            </IconTabBar>
+        </content>
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer />
+                <Button
+                    text="Back"
+                    press="onPressBack"
+                    type="Back"
+                />
+            </Toolbar>
+        </footer>
+    </Page>
+</mvc:View>
