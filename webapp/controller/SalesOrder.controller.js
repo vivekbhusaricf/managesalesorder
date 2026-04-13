@@ -82,8 +82,8 @@ sap.ui.define([
 
             onPresCreateSalesOrder: function() {
                 var oView = this.getView();
-                if(!this.crateSales) {
-                    this.crateSales = Fragment.load({
+                if(!this.createSales) {
+                    this.createSales = Fragment.load({
                     name:"com.sld.managesalesorder.view.fragment.CreateSalesOrder",
                     type:"XML",
                     id:oView.getId(),
@@ -93,7 +93,7 @@ sap.ui.define([
                     });
                 }
                
-                this.crateSales.then(function(oDialog) {
+                this.createSales.then(function(oDialog) {
                     oDialog.open();
                 }).catch( function(oError) {
 
@@ -101,7 +101,7 @@ sap.ui.define([
             },
 
             onPressCancel: function () {
-                this.crateSales.then(function(oDialog) {
+                this.createSales.then(function(oDialog) {
                     oDialog.close();
                 });
             }
