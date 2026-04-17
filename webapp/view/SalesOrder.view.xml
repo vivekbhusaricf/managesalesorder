@@ -47,7 +47,8 @@
                                 number="{salesModel>GrossAmount}"
                                 unit="{salesModel>CurrencyCode}"
                             />
-                            <Button text ="gekki" press="onPressButton"/>
+                            <!-- <Button text ="gekki" press="onPressButton"/> -->
+                            <Button icon ="sap-icon://sys-cancel-2" press="onPressDeleteRow" type="Reject"/>
                         </cells>
                     </ColumnListItem>
             </Table>

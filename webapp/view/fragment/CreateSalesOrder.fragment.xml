@@ -3,7 +3,7 @@
 	xmlns:l="sap.ui.layout"
 	xmlns:f="sap.ui.layout.form"
 	xmlns:core="sap.ui.core">
-	<Dialog>
+	<Dialog title="{i18n>fragment.sales.title}" contentWidth="30%">
 		<f:SimpleForm
 			editable="true"
 			layout="ResponsiveGridLayout"
@@ -19,10 +19,26 @@
 			columnsXL="1"
 			columnsL="1"
 			columnsM="1"
-			singleContainerFullSize="false" >
+			singleContainerFullSize="false" 
+			objectBindings="{salesOrderCreate>/}">
 			<f:content>
-				<Label text="Name" />
-				<Input value="{SupplierName}" />
+				<Label text="Sales Order ID" required="true"/>
+				<Input value="{salesOrderCreate>salesID}" />
+
+				<Label text="Customer ID" required="true"/>
+				<Input value="{salesOrderCreate>custID}" />
+
+				<Label text="Customer Name" />
+				<Input value="{salesOrderCreate>custName}" />
+
+				<!-- <Label text="Gross Amount" />
+				<Input value="{salesOrderCreate>grossAmount}" /> -->
+
+				<!-- <Label text="NetAmount" />
+				<Input value="{salesOrderCreate>netAmount}" /> -->
+
+				<Label text="CurrencyCode" />
+				<Input value="{salesOrderCreate>currCode}" />
 			</f:content>
 		</f:SimpleForm>
 		<buttons>

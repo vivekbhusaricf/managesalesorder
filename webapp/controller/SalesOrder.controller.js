@@ -1,8 +1,10 @@
 sap.ui.define([
     "sap/ui/core/mvc/Controller",
-    "sap/ui/core/Fragment"
+    "sap/ui/core/Fragment",
+    "sap/ui/model/json/JSONModel",
+    "sap/m/MessageBox"
 ],
-    function (Controller, Fragment) {
+    function (Controller, Fragment, JSONModel, MessageBox) {
         "use strict";
 
         return Controller.extend("com.sld.managesalesorder.controller.SalesOrder", {
@@ -10,7 +12,7 @@ sap.ui.define([
 
                 this.i18nModel = this.getOwnerComponent().getModel("i18n");
 
-                 this.getRouter().getRoute("RouteSalesOrder").attachPatternMatched(this.onRouteMatchSalesOrder, this);
+                this.getRouter().getRoute("RouteSalesOrder").attachPatternMatched(this.onRouteMatchSalesOrder, this);
 
                 // var aData ={"results": [{
                 //     SalesOrderID: "101",
@@ -31,10 +33,10 @@ sap.ui.define([
                 // ]};
 
                 // var oModel = new sap.ui.model.json.JSONModel(aData);
-                
+
                 // var oView = this.getView();
                 // oView.setModel(oModel, "salesModel");
-                
+
                 //var oTable = this.byId("idSalesOrders");
                 //oTable.setModel(oModel);
                 this.getSalesData();
@@ -44,15 +46,15 @@ sap.ui.define([
             getSalesData: function () {
                 var oResourceBundle = this.i18nModel.getResourceBundle();
                 var oModel = this.getOwnerComponent().getModel();
-                var oJsonModel = new sap.ui.model.json.JSONModel();
+                var oJsonModel = new JSONModel();
                 var oView = this.getView();
                 oView.setModel(oJsonModel, "salesModel");
 
                 oModel.read("/SalesOrderSet", {
-                    success: function(oData, oResponse) {
+                    success: function (oData, oResponse) {
                         oJsonModel.setData(oData);
-                        oJsonModel.setProperty("/salesCount",  oResourceBundle.getText("tableHeaderText", [oData.results.length]))
-                       
+                        oJsonModel.setProperty("/salesCount", oResourceBundle.getText("tableHeaderText", [oData.results.length]))
+
                     }, error: function (oError) {
 
                     }
@@ -66,7 +68,7 @@ sap.ui.define([
                 return sap.ui.core.UIComponent.getRouterFor(this);
             },
 
-            onPressItem: function(oEvent) {
+            onPressItem: function (oEvent) {
                 var oSource = oEvent.getSource();
                 var oBindingContext = oSource.getBindingContext("salesModel");
                 var sSalesOrderID = oBindingContext.getProperty("SalesOrderID");
@@ -76,34 +78,91 @@ sap.ui.define([
                 });
             },
 
-            onPressButton: function (oEvent) {
+            onPressDeleteRow: function (oEvent) {
                 debugger;
+                let oBindingContext = oEvent.getSource().getBindingContext("salesModel"),
+                    sSalesOrderID = oBindingContext.getProperty("SalesOrderID"),
+                     oDataModel = this.getOwnerComponent().getModel();
+                oDataModel.remove(`/SalesOrderSet('${sSalesOrderID}')`, {
+                    success: function (oData, oResponse) {
+                            sap.m.MessageToast.show(`Sales Odrer - ${sSalesOrderID} is deleted`); //template literal
+                            this.getSalesData();
+                        }.bind(this), error: function (oError) {
+                            var sMessage = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(sMessage);
+                        }
+                })
+                
             },
 
-            onPresCreateSalesOrder: function() {
+            onPresCreateSalesOrder: function () {
                 var oView = this.getView();
-                if(!this.createSales) {
+                if (!this.createSales) {
                     this.createSales = Fragment.load({
-                    name:"com.sld.managesalesorder.view.fragment.CreateSalesOrder",
-                    type:"XML",
-                    id:oView.getId(),
-                    controller: this 
-                    }).then(function(oDialog) {
+                        name: "com.sld.managesalesorder.view.fragment.CreateSalesOrder",
+                        type: "XML",
+                        id: oView.getId(),
+                        controller: this
+                    }).then(function (oDialog) {
+                        oView.addDependent(oDialog);
                         return oDialog;
                     });
                 }
-               
-                this.createSales.then(function(oDialog) {
+
+                var oModel = new JSONModel({
+                    salesID: "",
+                    custID: "",
+                    custName: "",
+                    grossAmount: "",
+                    netAmount: "",
+                    currCode: ""
+                });
+                oView.setModel(oModel, 'salesOrderCreate');
+
+                this.createSales.then(function (oDialog) {
                     oDialog.open();
-                }).catch( function(oError) {
+                }).catch(function (oError) {
 
                 });
             },
 
             onPressCancel: function () {
-                this.createSales.then(function(oDialog) {
+                this.createSales.then(function (oDialog) {
                     oDialog.close();
                 });
+            },
+
+            onSaveSalesOrder: function () {
+                let oModel = this.getView().getModel("salesOrderCreate"),
+                    oData = oModel.getData(),
+                    oPayload,
+                    oDataModel = this.getOwnerComponent().getModel();
+
+                if (!oData.salesID || !oData.custID) {
+                    MessageBox.error("Mandatory field can't be black");
+                } else {
+                    oPayload = {
+                        SalesOrderID: oData.salesID,
+                        CustomerID: oData.custID,
+                        CustomerName: oData.custName,
+                        //GrossAmount: parseFloat(oData.grossAmount),
+                        //NetAmount: parseFloat(oData.netAmount),
+                        CurrencyCode: oData.currCode
+                    };
+                    oDataModel.create("/SalesOrderSet", oPayload, {
+                        success: function (oData, oResponse) {
+                            let sSalesID = oResponse['data'].SalesOrderID;
+                            //MessageBox.success("Sales odrer -" + oResponse['data'].SalesOrderID + "is created");
+                            MessageBox.success(`Sales Odrer - ${sSalesID} is created`); //template literal
+
+                            this.onPressCancel();
+                            this.getSalesData();
+                        }.bind(this), error: function (oError) {
+                            var sMessage = JSON.parse(oError.responseText).error.message.value;
+                            MessageBox.error(sMessage);
+                        }
+                    })
+                }
             }
         });
     });
